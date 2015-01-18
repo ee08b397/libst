@@ -26,21 +26,32 @@ class BST(object):
 
 
     def insert(self, val):
-        self.root = self._insert(self.root, val)
+        """Insert a value into bst"""
+        if type(val) == int:
+            self.root = self._insert(self.root, val)
 
 
-    def _print_inorder(self, root):
-        """Print tree nodes with in-order traversal"""
+    def _print_tree(self, root, order):
+        """Print tree nodes with in/pre/post-order traversal"""
         if root == None:
             return
         else:
-            self._print_inorder(root.left)
-            print root.data
-            self._print_inorder(root.right)
+            if order == "INORDER":
+                self._print_tree(root.left, order)
+                print root.data
+                self._print_tree(root.right, order)
+            elif order == "PREORDER":
+                print root.data
+                self._print_tree(root.left, order)
+                self._print_tree(root.right, order)
+            elif order == "POSTORDER":
+                self._print_tree(root.left, order)
+                self._print_tree(root.right, order)
+                print root.data
 
 
-    def print_inorder(self):
-        self._print_inorder(self.root)
+    def print_tree(self, order="INORDER"):
+        self._print_tree(self.root, order)
 
 
     def _max_height(self, root):
@@ -77,7 +88,7 @@ if __name__ == "__main__":
     bst.insert(12)
     bst.insert(13)
 
-    bst.print_inorder()
+    bst.print_tree("INORDER")
 
     if bst.is_balanced():
         print "Tree is balanced"    
