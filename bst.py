@@ -1,5 +1,7 @@
 #!/usr/bin/python2
 
+import sys
+
 class BST(object):
 
     class Node(object):
@@ -77,25 +79,7 @@ class BST(object):
                     queue.append(node.right)
                     counter += 1
             print   # Go to next level
-        
 
-    def _knuth_layout(self, root, depth):
-        if root.left: 
-            self._knuth_layout(root.left, depth + 1)
-        root.x = self.i
-        root.y = depth
-        self.i += 1 
-        if root.right:
-            self._knuth_layout(root.right, depth + 1)
-
-
-    def print_knuth(self):
-        if self.root == None:   
-            return 
-        # Generate the layouts
-        self.i = 0
-        self._knuth_layout(self.root)
-            
 
     def _max_height(self, root):
         if root == None:
@@ -114,6 +98,21 @@ class BST(object):
     def is_balanced(self):
         return self._max_height(self.root) - self._min_height(self.root) < 2
 
+
+    @classmethod
+    def _is_bst(cls, root, lower, upper):
+        if root == None:
+            return True
+        else:
+            if root.data < lower or root.data > upper:
+                return False
+            return cls._is_bst(root.left, -float("inf"), root.data - 1) and cls._is_bst(root.right, root.data, float("inf"))
+
+    @classmethod 
+    def is_bst(cls, root):
+        """Check if a binary tree is a binary search tree or not"""  
+        return cls._is_bst(root, -float("inf"), float("inf"))
+
     
 if __name__ == "__main__":
     bst = BST()
@@ -128,6 +127,7 @@ if __name__ == "__main__":
     bst.insert(10)
     bst.insert(8)
     bst.insert(5)
+    bst.insert(5)
     bst.insert(12)
     bst.insert(13)
 
@@ -139,4 +139,7 @@ if __name__ == "__main__":
     else:
         print "Tree is not balanced"
 
-
+    if BST.is_bst(bst.root):
+        print "Is a bst"
+    else:
+        print "Not a bst"
