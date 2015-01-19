@@ -1,6 +1,19 @@
 #!/usr/bin/python2
 
-import sys
+###################################
+# Libst: A simple Binary Search Tree class
+# Written by: Dewei Chen
+# 
+# -- Public API --
+# Instance methods:
+# insert(val)
+# print_tree()
+# print_level()
+# is_balanced()
+# Class methods:
+# is_bst(root)
+#
+###################################
 
 class BST(object):
 
@@ -9,8 +22,6 @@ class BST(object):
             self.left = None
             self.right = None
             self.data = val
-            self.x = 0
-            self.y = 0
 
 
     def __init__(self):
@@ -29,7 +40,7 @@ class BST(object):
 
 
     def insert(self, val):
-        """Insert a value into bst"""
+        """Insert a node with value into bst"""
         if type(val) == int:
             self.root = self._insert(self.root, val)
 
@@ -61,11 +72,13 @@ class BST(object):
 
 
     def print_level(self):
+        """Print tree with level order traversal. Prints new line for each depth"""
         if not self.root:
             return            
         queue = []
         queue.append(self.root)
         counter = 1
+        print "Level: "
         while len(queue) > 0:
             temp = counter
             counter = 0
@@ -131,7 +144,7 @@ if __name__ == "__main__":
     bst.insert(12)
     bst.insert(13)
 
-    bst.print_tree("INORDER")
+    bst.print_tree()
     bst.print_level()
 
     if bst.is_balanced():
