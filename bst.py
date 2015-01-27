@@ -1,5 +1,20 @@
 #!/usr/bin/python2
 
+###################################
+# Libst: A simple Binary Search Tree class
+# Written by: Dewei Chen
+# 
+# -- Public API --
+# Instance methods:
+# insert(val)
+# print_tree()
+# print_level()
+# is_balanced()
+# Class methods:
+# is_bst(root)
+#
+###################################
+
 class BST(object):
 
     class Node(object):
@@ -7,8 +22,6 @@ class BST(object):
             self.left = None
             self.right = None
             self.data = val
-            self.x = 0
-            self.y = 0
 
 
     def __init__(self):
@@ -27,7 +40,7 @@ class BST(object):
 
 
     def insert(self, val):
-        """Insert a value into bst"""
+        """Insert a node with value into bst"""
         if type(val) == int:
             self.root = self._insert(self.root, val)
 
@@ -59,11 +72,13 @@ class BST(object):
 
 
     def print_level(self):
+        """Print tree with level order traversal. Prints new line for each depth"""
         if not self.root:
             return            
         queue = []
         queue.append(self.root)
         counter = 1
+        print "Level: "
         while len(queue) > 0:
             temp = counter
             counter = 0
@@ -77,7 +92,7 @@ class BST(object):
                     queue.append(node.right)
                     counter += 1
             print   # Go to next level
-        
+
 
     def _knuth_layout(self, root, depth):
         if root.left: 
@@ -126,6 +141,21 @@ class BST(object):
     def is_balanced(self):
         return self._max_height(self.root) - self._min_height(self.root) < 2
 
+
+    @classmethod
+    def _is_bst(cls, root, lower, upper):
+        if root == None:
+            return True
+        else:
+            if root.data < lower or root.data > upper:
+                return False
+            return cls._is_bst(root.left, -float("inf"), root.data - 1) and cls._is_bst(root.right, root.data, float("inf"))
+
+    @classmethod 
+    def is_bst(cls, root):
+        """Check if a binary tree is a binary search tree or not"""  
+        return cls._is_bst(root, -float("inf"), float("inf"))
+
     
 if __name__ == "__main__":
     bst = BST()
@@ -140,10 +170,11 @@ if __name__ == "__main__":
     bst.insert(10)
     bst.insert(8)
     bst.insert(5)
+    bst.insert(5)
     bst.insert(12)
     bst.insert(13)
 
-    bst.print_tree("INORDER")
+    bst.print_tree()
     bst.print_level()
 
     if bst.is_balanced():
@@ -151,4 +182,7 @@ if __name__ == "__main__":
     else:
         print "Tree is not balanced"
 
-
+    if BST.is_bst(bst.root):
+        print "Is a bst"
+    else:
+        print "Not a bst"
