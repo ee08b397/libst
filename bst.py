@@ -95,6 +95,18 @@ class BST(object):
         # Generate the layouts
         self.i = 0
         self._knuth_layout(self.root)
+
+    
+    def print_tree_demo(n):
+        
+        S = [] 
+        prev = 2
+        for i in range(n):
+            prev = prev + 2**i
+            S.append(prev)
+        for s in reversed(S):
+            print " " * s,
+            print "*"
             
 
     def _max_height(self, root):
