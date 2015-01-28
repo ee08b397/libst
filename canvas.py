@@ -6,20 +6,19 @@ class Canvas(object):
 
     class Space(object):
 
-        def __init__(self, frame_width, frame_height, MAX_X=1000, MAX_Y=1000):
-            self._MAX_X = MAX_X
-            self._MAX_Y = MAX_Y
+        def __init__(self, frame_width, frame_height, lim_x=1000, lim_y=1000):
+            self._lim_x = lim_x
+            self._lim_y = lim_y
             self._wd = frame_width
             self._ht = frame_height
             self._x = 0
             self._y = 0
-            self._mat = [[None] * self._MAX_X for i in range(self._MAX_Y)]
+            self._mat = [[None] * self._lim_x for i in range(self._lim_y)]
 
 
-        def _shift(self, axis, s):
-            lim = self._MAX_X if axis == "X" else self._MAX_Y
-            if s > 0 and self._x + self._wd + s > lim:
-                self._x = self._MAX_X - self._wd
+        def _shift_x(self, s):
+            if s > 0 and self._x + self._wd + s > self._lim_x:
+                self._x = self._lim_x - self._wd
             elif s < 0 and self._x + s < 0:
                 self._x = 0
             else:
@@ -27,12 +26,12 @@ class Canvas(object):
 
 
         def _shift_y(self, s):
-            if s > 0 and self._y + self._ht + s > self._MAX_Y:
-                self._x = self._MAX_X - self._wd
-            elif s < 0 and self._x + s < 0:
-                self._x = 0
+            if s > 0 and self._y + self._ht + s > self._lim_y:
+                self._y = self._lim_y - self._ht
+            elif s < 0 and self._y + s < 0:
+                self._y = 0
             else:
-                self._x += s
+                self._y += s
 
         
         def _draw_frame(self): 
@@ -46,12 +45,12 @@ class Canvas(object):
         def _putc(self, x, y, c):
             if type(c) is not str or len(c) > 1:
                 return
-            if x > self._MAX_X:
-                x = self._MAX_X
+            if x > self._lim_x:
+                x = self._lim_x
             elif x < 0:
                 x = 0
-            elif y > self._MAX_Y:
-                y = self._MAX_Y
+            elif y > self._lim_y:
+                y = self._lim_y
             elif y < 0:
                 y = 0
             self._mat[y][x] = str(c)
@@ -78,7 +77,13 @@ class Canvas(object):
 
     
     def move_x(self, s):
+        if type(s) is not int:
+            return
         self.space._shift_x(s)
+
+
+    def move_y(self, s):
+        self.space._shift_y(s)
 
 
     def draw(self):
@@ -87,9 +92,10 @@ class Canvas(object):
 
 if __name__ == "__main__":
     
-    canvas = Canvas(80, 50)
+    canvas = Canvas(80, 30)
     canvas.print_int(0, 0, 1234)
     canvas.print_str(4, 4, "hello")
     canvas.move_x(2)
+    canvas.move_y(3)
     canvas.draw()
 
