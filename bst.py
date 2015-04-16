@@ -20,7 +20,13 @@ class BST(object):
         def __init__(self, val=None):
             self.left = None
             self.right = None
-            self.data = val # must be integers!
+            if val and type(val) != int:
+                raise TypeError
+            else:
+                self.data = val # must be integers!
+        
+        def __str__(self):
+            return "bst node: " + str(self.data)
 
 
     def __init__(self):
