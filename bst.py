@@ -4,13 +4,12 @@
 # Libst: A simple Binary Search Tree class
 # Written by: Dewei Chen
 # 
-# -- Public API --
-# Instance methods:
+# -- Public Methods --
 # insert(val)
 # print_tree()
 # print_level()
 # is_balanced()
-# Class methods:
+# -- Class methods --
 # is_bst(root)
 #
 ###################################
@@ -21,7 +20,7 @@ class BST(object):
         def __init__(self, val=None):
             self.left = None
             self.right = None
-            self.data = val
+            self.data = val # must be integers!
 
 
     def __init__(self):
@@ -43,7 +42,25 @@ class BST(object):
         """Insert a node with value into bst"""
         if type(val) == int:
             self.root = self._insert(self.root, val)
+    
+    # TODO: Delete node
 
+    def _search(self, root, val):
+        if root == None:
+            return None
+        else:
+            if root.data < val:
+                return self._search(root.right, val)
+            elif root.data > val:
+                return self._search(root.left, val)
+            else:
+                return root 
+
+
+    def search(self, val):
+        """Searches for val in bst. Returns node if found."""
+        return self._search(self.root, val)
+        
 
     def _print_tree(self, root, order):
         if root == None:
@@ -113,7 +130,6 @@ class BST(object):
 
     
     def print_tree_demo(n):
-        
         S = [] 
         prev = 2
         for i in range(n):
@@ -153,7 +169,7 @@ class BST(object):
 
     @classmethod 
     def is_bst(cls, root):
-        """Check if a binary tree is a binary search tree or not"""  
+        """Check if a binary tree is a binary search tree or not. Assume integer vals."""  
         return cls._is_bst(root, -float("inf"), float("inf"))
 
     
@@ -186,3 +202,5 @@ if __name__ == "__main__":
         print "Is a bst"
     else:
         print "Not a bst"
+
+    print bst.search(12)
